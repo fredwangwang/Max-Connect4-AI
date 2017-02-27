@@ -1,0 +1,7 @@
+# ignore all unnecessary stuff
+*
+
+# except source file
+!*.cpp
+!*.h
+!.gitignore
