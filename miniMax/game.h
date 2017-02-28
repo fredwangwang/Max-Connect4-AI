@@ -14,12 +14,15 @@ public:
     // constructor
     Game();
    
+    void init(int argc, char ** argv, bool debug = false);
     void start();
-
-    // functions related to game config and initialize
-    void init(int argc, char ** argv);
-
+    
 private:
+    const int ASCII_0 = 48;
+    const int ASCII_9 = 57;
+    const char * _comOutputFile = "computer.txt";
+    const char * _humOutputFile = "human.txt";
+
     int * _gameBoard[6];
     int _gameData[42];
     int _currentTurn;
@@ -30,8 +33,8 @@ private:
 
     char * _infilename = NULL;
     char * _outfilename = NULL;
-    const char * _comOutputFile = "computer.txt";
-    const char * _humOutputFile = "human.txt";
+
+
 
     game_mode _gamemode;
     bool _comNext;
@@ -40,6 +43,7 @@ private:
     void setInputfile(char * infile);
     void setOutputfile(char * outfile);
     void setNextPlayer(char * next);
+    void setDepthLimit(char * depth);
 
     void printGameBoard();
     void printGameBoardToFile(const char * outfilename);

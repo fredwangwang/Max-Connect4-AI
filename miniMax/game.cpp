@@ -64,7 +64,6 @@ void Game::printGameBoardToFile(const char * outfilename) {
         fout << endl;
     }
     fout << _currentTurn;
-
     fout.close();
 }
 
@@ -86,7 +85,6 @@ bool Game::playPiece(int column) {
             return true;
         }
     }
-
     // never reach, add for safety
     return false;
 }
@@ -493,9 +491,8 @@ void Game::startInteractive() {
             humanPlay();
             printGameBoardToFile(_humOutputFile);
         }
-
     }
-    
+
     int winner = 0;
     if (_player1Score > _player2Score)
         winner = 1;
@@ -518,7 +515,6 @@ void Game::readInputFile() {
         return;
 
     string oneline;
-    const int ASCII_0 = 48;
     for (int i = 0; i < 6; ++i) {
         getline(fin, oneline);
         for (int j = 0; j < 7; ++j) {
@@ -543,7 +539,7 @@ void Game::start() {
     else startOneMove();
 }
 
-void Game::init(int argc, char ** argv) {
+void Game::init(int argc, char ** argv, bool debug) {
     if (argc != 5) {
         cout << "Four command-line arguments are needed:\n";
         cout << "Usage: Program interactive [input_file] [computer-next/human-next] [depth]\n";
@@ -555,6 +551,22 @@ void Game::init(int argc, char ** argv) {
     setInputfile(argv[2]);
     if (_gamemode == INTERACTIVE) setNextPlayer(argv[3]);
     else setOutputfile(argv[3]);
+    setDepthLimit(argv[4]);
+
+    if (debug) {
+        cout << "Para: " << endl;
+        cout << "GameMode: "; 
+        if (_gamemode == INTERACTIVE) cout << "INTERACTIVE" << endl; 
+        else cout << "ONEMOVE" << endl;
+        cout << "InputFile: " << _infilename << endl;
+        if (_gamemode == INTERACTIVE) {
+            cout << "NextPlayer: ";
+            if (_comNext) cout << "COMPUTER" << endl;
+            else cout << "PLAYER" << endl;
+        }
+        else cout << "OutputFile: " << _outfilename << endl;
+        cout << "DepthLimit: " << _depth << endl;
+    }
 }
 
 void Game::setGameMode(char * mode) {
@@ -585,5 +597,13 @@ void Game::setNextPlayer(char * next) {
         cerr << next << " is an unrecognized command\n";
         exit(EXIT_FAILURE);
     }
+}
+
+void Game::setDepthLimit(char * depth) {
+    if (depth[0] < ASCII_0 || depth[0] > ASCII_9) {// this is not a valid number
+        cerr << depth << " is not a valid depth limit value" << endl;
+        exit(EXIT_FAILURE);
+    }
+    _depth = atoi(depth);
 }
 
