@@ -1,11 +1,9 @@
 #include "game.h"
 #include <iostream>
-#include <string>
-#include <stdlib.h>
 
 using namespace std;
 
-void Game::init(int argc, char ** argv, bool debug) {
+void Game::init(int argc, char **argv, bool debug) {
     if (argc != 5) {
         cout << "Four command-line arguments are needed:\n";
         cout << "Usage: Program interactive [input_file] [computer-next/human-next] [depth]\n";
@@ -29,8 +27,7 @@ void Game::init(int argc, char ** argv, bool debug) {
             cout << "NextPlayer: ";
             if (_comNext) cout << "COMPUTER" << endl;
             else cout << "PLAYER" << endl;
-        }
-        else cout << "OutputFile: " << _outfilename << endl;
+        } else cout << "OutputFile: " << _outfilename << endl;
         cout << "DepthLimit: " << _depthLim << endl;
     }
 }
@@ -67,8 +64,7 @@ void Game::startInteractive() {
             printGameBoard();
             printPlayerScore();
             printGameBoardToFile(_comOutputFile);
-        }
-        else {
+        } else {
             _comNext = true;
             cout << "It is your turn." << " You are playing: \"" << ((_currentTurn == 1) ? "O\"" : "X\"") << endl;
             humanPlay();
@@ -110,6 +106,6 @@ void Game::humanPlay() {
         }
     } while (!playPiece(col, _gameData, _currentTurn));
 
-    if (_currentTurn == 1)  _currentTurn = 2;
+    if (_currentTurn == 1) _currentTurn = 2;
     else _currentTurn = 1;
 }
