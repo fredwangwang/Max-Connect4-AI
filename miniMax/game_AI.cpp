@@ -1,6 +1,7 @@
 #include "game.h"
 #include <cstring>
 #include <limits.h>
+#include <algorithm>
 
 using namespace std;
 

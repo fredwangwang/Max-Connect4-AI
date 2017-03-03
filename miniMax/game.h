@@ -1,7 +1,6 @@
 #pragma once
 
 #include <string>
-#include <vector>
 
 const int ASCII_0 = 48;
 const int ASCII_9 = 57;
