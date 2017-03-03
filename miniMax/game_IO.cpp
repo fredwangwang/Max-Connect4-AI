@@ -1,7 +1,11 @@
 #include "game.h"
 #include <iostream>
 #include <fstream>
+#include <string>
+#include <ctime>
+#include <vector>
 #include <algorithm>
+#include <stdlib.h>
 
 using namespace std;
 
@@ -25,7 +29,7 @@ void Game::printGameBoard() {
 }
 
 // write the board to file
-void Game::printGameBoardToFile(const char *outfilename) {
+void Game::printGameBoardToFile(const char * outfilename) {
     if (outfilename == NULL) {
         cerr << "No output file name specified" << endl;
         exit(EXIT_FAILURE);
@@ -64,7 +68,7 @@ void Game::readInputFile() {
     for (int i = 0; i < 6; ++i) {
         getline(fin, oneline);
         for (int j = 0; j < 7; ++j) {
-            _gameBoard[i][j] = (int) oneline[j] - ASCII_0;
+            _gameBoard[i][j] = (int)oneline[j] - ASCII_0;
             if (_gameBoard[i][j])
                 ++_pieceCount;
         }

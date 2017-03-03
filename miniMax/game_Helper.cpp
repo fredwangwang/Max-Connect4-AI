@@ -1,14 +1,20 @@
 #include "game.h"
 #include <iostream>
+#include <fstream>
+#include <string>
+#include <ctime>
+#include <vector>
+#include <algorithm>
+#include <stdlib.h>
 
 using namespace std;
 
-void Game::countScore(int *_gamedata) {
+void Game::countScore(int * _gamedata) {
     countScore(gameDataTOgameBoard(_gameData));
 }
 
 // this serves its job... but too long
-void Game::countScore(int **_gameBoard) {
+void Game::countScore(int ** _gameBoard) {
     _player1Score = 0;
     _player2Score = 0;
 
@@ -58,205 +64,253 @@ void Game::countScore(int **_gameBoard) {
 
     //check player 1
     if (_gameBoard[2][0] == 1 && _gameBoard[3][1] == 1
-        && _gameBoard[4][2] == 1 && _gameBoard[5][3] == 1) {
+        && _gameBoard[4][2] == 1 && _gameBoard[5][3] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][0] == 1 && _gameBoard[2][1] == 1
-        && _gameBoard[3][2] == 1 && _gameBoard[4][3] == 1) {
+        && _gameBoard[3][2] == 1 && _gameBoard[4][3] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][1] == 1 && _gameBoard[3][2] == 1
-        && _gameBoard[4][3] == 1 && _gameBoard[5][4] == 1) {
+        && _gameBoard[4][3] == 1 && _gameBoard[5][4] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][0] == 1 && _gameBoard[1][1] == 1
-        && _gameBoard[2][2] == 1 && _gameBoard[3][3] == 1) {
+        && _gameBoard[2][2] == 1 && _gameBoard[3][3] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][1] == 1 && _gameBoard[2][2] == 1
-        && _gameBoard[3][3] == 1 && _gameBoard[4][4] == 1) {
+        && _gameBoard[3][3] == 1 && _gameBoard[4][4] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][2] == 1 && _gameBoard[3][3] == 1
-        && _gameBoard[4][4] == 1 && _gameBoard[5][5] == 1) {
+        && _gameBoard[4][4] == 1 && _gameBoard[5][5] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][1] == 1 && _gameBoard[1][2] == 1
-        && _gameBoard[2][3] == 1 && _gameBoard[3][4] == 1) {
+        && _gameBoard[2][3] == 1 && _gameBoard[3][4] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][2] == 1 && _gameBoard[2][3] == 1
-        && _gameBoard[3][4] == 1 && _gameBoard[4][5] == 1) {
+        && _gameBoard[3][4] == 1 && _gameBoard[4][5] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][3] == 1 && _gameBoard[3][4] == 1
-        && _gameBoard[4][5] == 1 && _gameBoard[5][6] == 1) {
+        && _gameBoard[4][5] == 1 && _gameBoard[5][6] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][2] == 1 && _gameBoard[1][3] == 1
-        && _gameBoard[2][4] == 1 && _gameBoard[3][5] == 1) {
+        && _gameBoard[2][4] == 1 && _gameBoard[3][5] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][3] == 1 && _gameBoard[2][4] == 1
-        && _gameBoard[3][5] == 1 && _gameBoard[4][6] == 1) {
+        && _gameBoard[3][5] == 1 && _gameBoard[4][6] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][3] == 1 && _gameBoard[1][4] == 1
-        && _gameBoard[2][5] == 1 && _gameBoard[3][6] == 1) {
+        && _gameBoard[2][5] == 1 && _gameBoard[3][6] == 1)
+    {
         _player1Score++;
     }
 
     if (_gameBoard[0][3] == 1 && _gameBoard[1][2] == 1
-        && _gameBoard[2][1] == 1 && _gameBoard[3][0] == 1) {
+        && _gameBoard[2][1] == 1 && _gameBoard[3][0] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][4] == 1 && _gameBoard[1][3] == 1
-        && _gameBoard[2][2] == 1 && _gameBoard[3][1] == 1) {
+        && _gameBoard[2][2] == 1 && _gameBoard[3][1] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][3] == 1 && _gameBoard[2][2] == 1
-        && _gameBoard[3][1] == 1 && _gameBoard[4][0] == 1) {
+        && _gameBoard[3][1] == 1 && _gameBoard[4][0] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][5] == 1 && _gameBoard[1][4] == 1
-        && _gameBoard[2][3] == 1 && _gameBoard[3][2] == 1) {
+        && _gameBoard[2][3] == 1 && _gameBoard[3][2] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][4] == 1 && _gameBoard[2][3] == 1
-        && _gameBoard[3][2] == 1 && _gameBoard[4][1] == 1) {
+        && _gameBoard[3][2] == 1 && _gameBoard[4][1] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][3] == 1 && _gameBoard[3][2] == 1
-        && _gameBoard[4][1] == 1 && _gameBoard[5][0] == 1) {
+        && _gameBoard[4][1] == 1 && _gameBoard[5][0] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[0][6] == 1 && _gameBoard[1][5] == 1
-        && _gameBoard[2][4] == 1 && _gameBoard[3][3] == 1) {
+        && _gameBoard[2][4] == 1 && _gameBoard[3][3] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][5] == 1 && _gameBoard[2][4] == 1
-        && _gameBoard[3][3] == 1 && _gameBoard[4][2] == 1) {
+        && _gameBoard[3][3] == 1 && _gameBoard[4][2] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][4] == 1 && _gameBoard[3][3] == 1
-        && _gameBoard[4][2] == 1 && _gameBoard[5][1] == 1) {
+        && _gameBoard[4][2] == 1 && _gameBoard[5][1] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[1][6] == 1 && _gameBoard[2][5] == 1
-        && _gameBoard[3][4] == 1 && _gameBoard[4][3] == 1) {
+        && _gameBoard[3][4] == 1 && _gameBoard[4][3] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][5] == 1 && _gameBoard[3][4] == 1
-        && _gameBoard[4][3] == 1 && _gameBoard[5][2] == 1) {
+        && _gameBoard[4][3] == 1 && _gameBoard[5][2] == 1)
+    {
         _player1Score++;
     }
     if (_gameBoard[2][6] == 1 && _gameBoard[3][5] == 1
-        && _gameBoard[4][4] == 1 && _gameBoard[5][3] == 1) {
+        && _gameBoard[4][4] == 1 && _gameBoard[5][3] == 1)
+    {
         _player1Score++;
     }
 
     //check player 2
     if (_gameBoard[2][0] == 2 && _gameBoard[3][1] == 2
-        && _gameBoard[4][2] == 2 && _gameBoard[5][3] == 2) {
+        && _gameBoard[4][2] == 2 && _gameBoard[5][3] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][0] == 2 && _gameBoard[2][1] == 2
-        && _gameBoard[3][2] == 2 && _gameBoard[4][3] == 2) {
+        && _gameBoard[3][2] == 2 && _gameBoard[4][3] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][1] == 2 && _gameBoard[3][2] == 2
-        && _gameBoard[4][3] == 2 && _gameBoard[5][4] == 2) {
+        && _gameBoard[4][3] == 2 && _gameBoard[5][4] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][0] == 2 && _gameBoard[1][1] == 2
-        && _gameBoard[2][2] == 2 && _gameBoard[3][3] == 2) {
+        && _gameBoard[2][2] == 2 && _gameBoard[3][3] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][1] == 2 && _gameBoard[2][2] == 2
-        && _gameBoard[3][3] == 2 && _gameBoard[4][4] == 2) {
+        && _gameBoard[3][3] == 2 && _gameBoard[4][4] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][2] == 2 && _gameBoard[3][3] == 2
-        && _gameBoard[4][4] == 2 && _gameBoard[5][5] == 2) {
+        && _gameBoard[4][4] == 2 && _gameBoard[5][5] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][1] == 2 && _gameBoard[1][2] == 2
-        && _gameBoard[2][3] == 2 && _gameBoard[3][4] == 2) {
+        && _gameBoard[2][3] == 2 && _gameBoard[3][4] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][2] == 2 && _gameBoard[2][3] == 2
-        && _gameBoard[3][4] == 2 && _gameBoard[4][5] == 2) {
+        && _gameBoard[3][4] == 2 && _gameBoard[4][5] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][3] == 2 && _gameBoard[3][4] == 2
-        && _gameBoard[4][5] == 2 && _gameBoard[5][6] == 2) {
+        && _gameBoard[4][5] == 2 && _gameBoard[5][6] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][2] == 2 && _gameBoard[1][3] == 2
-        && _gameBoard[2][4] == 2 && _gameBoard[3][5] == 2) {
+        && _gameBoard[2][4] == 2 && _gameBoard[3][5] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][3] == 2 && _gameBoard[2][4] == 2
-        && _gameBoard[3][5] == 2 && _gameBoard[4][6] == 2) {
+        && _gameBoard[3][5] == 2 && _gameBoard[4][6] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][3] == 2 && _gameBoard[1][4] == 2
-        && _gameBoard[2][5] == 2 && _gameBoard[3][6] == 2) {
+        && _gameBoard[2][5] == 2 && _gameBoard[3][6] == 2)
+    {
         _player2Score++;
     }
 
     if (_gameBoard[0][3] == 2 && _gameBoard[1][2] == 2
-        && _gameBoard[2][1] == 2 && _gameBoard[3][0] == 2) {
+        && _gameBoard[2][1] == 2 && _gameBoard[3][0] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][4] == 2 && _gameBoard[1][3] == 2
-        && _gameBoard[2][2] == 2 && _gameBoard[3][1] == 2) {
+        && _gameBoard[2][2] == 2 && _gameBoard[3][1] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][3] == 2 && _gameBoard[2][2] == 2
-        && _gameBoard[3][1] == 2 && _gameBoard[4][0] == 2) {
+        && _gameBoard[3][1] == 2 && _gameBoard[4][0] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][5] == 2 && _gameBoard[1][4] == 2
-        && _gameBoard[2][3] == 2 && _gameBoard[3][2] == 2) {
+        && _gameBoard[2][3] == 2 && _gameBoard[3][2] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][4] == 2 && _gameBoard[2][3] == 2
-        && _gameBoard[3][2] == 2 && _gameBoard[4][1] == 2) {
+        && _gameBoard[3][2] == 2 && _gameBoard[4][1] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][3] == 2 && _gameBoard[3][2] == 2
-        && _gameBoard[4][1] == 2 && _gameBoard[5][0] == 2) {
+        && _gameBoard[4][1] == 2 && _gameBoard[5][0] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[0][6] == 2 && _gameBoard[1][5] == 2
-        && _gameBoard[2][4] == 2 && _gameBoard[3][3] == 2) {
+        && _gameBoard[2][4] == 2 && _gameBoard[3][3] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][5] == 2 && _gameBoard[2][4] == 2
-        && _gameBoard[3][3] == 2 && _gameBoard[4][2] == 2) {
+        && _gameBoard[3][3] == 2 && _gameBoard[4][2] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][4] == 2 && _gameBoard[3][3] == 2
-        && _gameBoard[4][2] == 2 && _gameBoard[5][1] == 2) {
+        && _gameBoard[4][2] == 2 && _gameBoard[5][1] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[1][6] == 2 && _gameBoard[2][5] == 2
-        && _gameBoard[3][4] == 2 && _gameBoard[4][3] == 2) {
+        && _gameBoard[3][4] == 2 && _gameBoard[4][3] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][5] == 2 && _gameBoard[3][4] == 2
-        && _gameBoard[4][3] == 2 && _gameBoard[5][2] == 2) {
+        && _gameBoard[4][3] == 2 && _gameBoard[5][2] == 2)
+    {
         _player2Score++;
     }
     if (_gameBoard[2][6] == 2 && _gameBoard[3][5] == 2
-        && _gameBoard[4][4] == 2 && _gameBoard[5][3] == 2) {
+        && _gameBoard[4][4] == 2 && _gameBoard[5][3] == 2)
+    {
         _player2Score++;
     }
 }
 
 // verify selected column valid or not
-bool Game::isValidColumn(int column, int *gamedata) {
+bool Game::isValidColumn(int column, int * gamedata) {
     if (column < 0 || column > 6)
         return false;
     if (gamedata[column] != 0)
@@ -265,7 +319,7 @@ bool Game::isValidColumn(int column, int *gamedata) {
 }
 
 // place that player's piece in the requested column
-bool Game::playPiece(int column, int *gamedata, int player) {
+bool Game::playPiece(int column, int * gamedata, int player) {
     if (!isValidColumn(column, gamedata))
         return false;
 
@@ -279,8 +333,8 @@ bool Game::playPiece(int column, int *gamedata, int player) {
     return false;
 }
 
-int **Game::gameDataTOgameBoard(int *gamedata) {
-    static int *_gameboard[6];
+int ** Game::gameDataTOgameBoard(int * gamedata) {
+    static int* _gameboard[6];
     _gameboard[0] = &(gamedata[0]);
     _gameboard[1] = &(gamedata[7]);
     _gameboard[2] = &(gamedata[14]);
@@ -290,7 +344,7 @@ int **Game::gameDataTOgameBoard(int *gamedata) {
     return _gameboard;
 }
 
-bool Game::getUserInputInt(int &in) {
+bool Game::getUserInputInt(int & in) {
     string str;
     getline(cin, str);
     if (str[0] > ASCII_9 || str[0] < ASCII_0)
@@ -299,7 +353,7 @@ bool Game::getUserInputInt(int &in) {
     return true;
 }
 
-int Game::totalPiece(int *gamedata) {
+int Game::totalPiece(int * gamedata) {
     int total = 0;
     for (int i = 0; i < 42; ++i)
         if (gamedata[i])
