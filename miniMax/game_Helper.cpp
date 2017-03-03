@@ -344,6 +344,15 @@ int ** Game::gameDataTOgameBoard(int * gamedata) {
     return _gameboard;
 }
 
+bool Game::getUserInputInt(int & in) {
+    string str;
+    getline(cin, str);
+    if (str[0] > ASCII_9 || str[0] < ASCII_0)
+        return false;
+    in = stoi(str);
+    return true;
+}
+
 int Game::totalPiece(int * gamedata) {
     int total = 0;
     for (int i = 0; i < 42; ++i)
