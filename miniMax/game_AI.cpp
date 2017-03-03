@@ -1,11 +1,6 @@
 #include "game.h"
-#include <iostream>
-#include <fstream>
-#include <string>
-#include <ctime>
-#include <vector>
-#include <algorithm>
-#include <stdlib.h>
+#include <cstring>
+#include <limits.h>
 
 using namespace std;
 
