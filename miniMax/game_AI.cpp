@@ -4,14 +4,14 @@
 
 using namespace std;
 
-void freeDynmBoard(int ** arrBoard) {
+void freeDynmBoard(int **arrBoard) {
     for (int i = 0; i < 7; ++i)
         if (arrBoard[i] != NULL)
             delete[] arrBoard[i];
     delete[] arrBoard;
 }
 
-int findNextRow(int ** gameBoard, int col) {
+int findNextRow(int **gameBoard, int col) {
     for (int i = 5; i >= 0; --i)
         if (gameBoard[i][col] == 0)
             return i;
@@ -20,21 +20,20 @@ int findNextRow(int ** gameBoard, int col) {
 
 // pass back an array of all possible boards
 // WITH THE PIECE ALREADY BEEN PLACED
-void Game::allValidChildConf(int ** arrBoard, int * currBoard, int player) {
+void Game::allValidChildConf(int **arrBoard, int *currBoard, int player) {
     for (int i = 0; i < 7; ++i)
         if (isValidColumn(i, currBoard)) {
             arrBoard[i] = new int[42];
             memcpy(arrBoard[i], currBoard, 42 * sizeof(int));
             playPiece(i, arrBoard[i], player);
-        }
-        else arrBoard[i] = NULL;
+        } else arrBoard[i] = NULL;
 }
 
 void Game::aiPlayABPruning() {
     int a = INT_MIN, b = INT_MAX;
     int score = (_currentTurn == 1) ? INT_MIN : INT_MAX;
     int col, nextTurn;
-    int ** arrBoard = new int *[7];
+    int **arrBoard = new int *[7];
 
     nextTurn = ((_currentTurn == 1) ? 2 : 1);
     allValidChildConf(arrBoard, _gameData, _currentTurn);
@@ -46,8 +45,7 @@ void Game::aiPlayABPruning() {
                     score = temp;
                     col = i;
                 }
-            }
-            else {
+            } else {
                 if (score > temp) {
                     score = temp;
                     col = i;
@@ -58,14 +56,12 @@ void Game::aiPlayABPruning() {
 
     playPiece(col, _gameData, _currentTurn);
 
-    //cout << "choosing score = " << score << endl;
-
     printf("move %i: Player %i, column %i\n\n\n", _pieceCount, _currentTurn, col + 1);
 
     freeDynmBoard(arrBoard);
 }
 
-int Game::calcThreatScoreOf(int ** gameBoard, int col, int row, int player) {
+int Game::calcThreatScoreOf(int **gameBoard, int col, int row, int player) {
     int total = 0;
     // 1. horizontal
     if (col < 5)
@@ -80,7 +76,7 @@ int Game::calcThreatScoreOf(int ** gameBoard, int col, int row, int player) {
     if (col > 2)
         if (gameBoard[row][col - 3] == player && gameBoard[row][col - 1] == player && gameBoard[row][col - 2] == player)
             total++;
-    
+
     // 2. vertical 
     if (row < 3)
         if (gameBoard[row + 1][col] == player && gameBoard[row + 2][col] == player && gameBoard[row + 3][col] == player)
@@ -88,40 +84,49 @@ int Game::calcThreatScoreOf(int ** gameBoard, int col, int row, int player) {
 
     // 3. up-left -- down-right diag
     if (row < 3 && col < 5)
-        if (gameBoard[row + 1][col + 1] == player && gameBoard[row + 2][col + 2] == player && gameBoard[row + 3][col + 3] == player)
+        if (gameBoard[row + 1][col + 1] == player && gameBoard[row + 2][col + 2] == player &&
+            gameBoard[row + 3][col + 3] == player)
             total++;
     if (row < 4 && row > 0 && col < 6 && col > 0)
-        if (gameBoard[row + 1][col + 1] == player && gameBoard[row + 2][col + 2] == player && gameBoard[row - 1][col - 1] == player)
+        if (gameBoard[row + 1][col + 1] == player && gameBoard[row + 2][col + 2] == player &&
+            gameBoard[row - 1][col - 1] == player)
             total++;
     if (row < 5 && row > 1 && col < 7 && col > 1)
-        if (gameBoard[row + 1][col + 1] == player && gameBoard[row - 2][col - 2] == player && gameBoard[row - 1][col - 1] == player)
+        if (gameBoard[row + 1][col + 1] == player && gameBoard[row - 2][col - 2] == player &&
+            gameBoard[row - 1][col - 1] == player)
             total++;
     if (row > 2 && col > 2)
-        if (gameBoard[row - 3][col - 3] == player && gameBoard[row - 2][col - 2] == player && gameBoard[row - 1][col - 1] == player)
+        if (gameBoard[row - 3][col - 3] == player && gameBoard[row - 2][col - 2] == player &&
+            gameBoard[row - 1][col - 1] == player)
             total++;
     // 4. up-right -- down-left diag
     if (row > 2 && col < 5)
-        if (gameBoard[row - 1][col + 1] == player && gameBoard[row - 2][col + 2] == player && gameBoard[row - 3][col + 3] == player)
+        if (gameBoard[row - 1][col + 1] == player && gameBoard[row - 2][col + 2] == player &&
+            gameBoard[row - 3][col + 3] == player)
             total++;
     if (row < 5 && row > 1 && col < 6 && col > 0)
-        if (gameBoard[row + 1][col - 1] == player && gameBoard[row - 2][col + 2] == player && gameBoard[row - 1][col + 1] == player)
+        if (gameBoard[row + 1][col - 1] == player && gameBoard[row - 2][col + 2] == player &&
+            gameBoard[row - 1][col + 1] == player)
             total++;
     if (row < 4 && row > 0 && col < 7 && col > 1)
-        if (gameBoard[row - 1][col + 1] == player && gameBoard[row + 2][col - 2] == player && gameBoard[row + 1][col - 1] == player)
+        if (gameBoard[row - 1][col + 1] == player && gameBoard[row + 2][col - 2] == player &&
+            gameBoard[row + 1][col - 1] == player)
             total++;
     if (row < 3 && col > 2)
-        if (gameBoard[row + 3][col - 3] == player && gameBoard[row + 2][col - 2] == player && gameBoard[row + 1][col - 1] == player)
+        if (gameBoard[row + 3][col - 3] == player && gameBoard[row + 2][col - 2] == player &&
+            gameBoard[row + 1][col - 1] == player)
             total++;
 
     return total;
 }
 
-int Game::calcThreatScore(int ** gameBoard, int player) {
+int Game::calcThreatScore(int **gameBoard, int player) {
     int nextRow;
     int score = 0;
     for (int i = 0; i < 7; ++i) { // linearly go from left to right to eval all 
         nextRow = findNextRow(gameBoard, i);
-        if (nextRow < 1) continue; // because the threat shouldnot be the immediate step. If it is less than 1, it is the last step can take
+        if (nextRow < 1)
+            continue; // because the threat shouldnot be the immediate step. If it is less than 1, it is the last step can take
         for (int j = 0; j < nextRow; ++j)
             score += calcThreatScoreOf(gameBoard, i, j, player);
     }
@@ -129,7 +134,7 @@ int Game::calcThreatScore(int ** gameBoard, int player) {
     return score;
 }
 
-int Game::calcImmedScore(int ** gameBoard, int player) {
+int Game::calcImmedScore(int **gameBoard, int player) {
     int nextRow;
     int score = 0;
     for (int i = 0; i < 7; ++i) { // linearly go from left to right to eval all 
@@ -142,7 +147,7 @@ int Game::calcImmedScore(int ** gameBoard, int player) {
 }
 
 // count how many winning rows does the player has
-void Game::numWinningRow(int ** _gameBoard, int & _player1winning, int & _player2winning) {
+void Game::numWinningRow(int **_gameBoard, int &_player1winning, int &_player2winning) {
     _player2winning = 0;
     _player1winning = 0;
 
@@ -192,252 +197,204 @@ void Game::numWinningRow(int ** _gameBoard, int & _player1winning, int & _player
 
     //check player 1
     if (_gameBoard[2][0] != 1 && _gameBoard[3][1] != 1
-        && _gameBoard[4][2] != 1 && _gameBoard[5][3] != 1)
-    {
+        && _gameBoard[4][2] != 1 && _gameBoard[5][3] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][0] != 1 && _gameBoard[2][1] != 1
-        && _gameBoard[3][2] != 1 && _gameBoard[4][3] != 1)
-    {
+        && _gameBoard[3][2] != 1 && _gameBoard[4][3] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][1] != 1 && _gameBoard[3][2] != 1
-        && _gameBoard[4][3] != 1 && _gameBoard[5][4] != 1)
-    {
+        && _gameBoard[4][3] != 1 && _gameBoard[5][4] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][0] != 1 && _gameBoard[1][1] != 1
-        && _gameBoard[2][2] != 1 && _gameBoard[3][3] != 1)
-    {
+        && _gameBoard[2][2] != 1 && _gameBoard[3][3] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][1] != 1 && _gameBoard[2][2] != 1
-        && _gameBoard[3][3] != 1 && _gameBoard[4][4] != 1)
-    {
+        && _gameBoard[3][3] != 1 && _gameBoard[4][4] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][2] != 1 && _gameBoard[3][3] != 1
-        && _gameBoard[4][4] != 1 && _gameBoard[5][5] != 1)
-    {
+        && _gameBoard[4][4] != 1 && _gameBoard[5][5] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][1] != 1 && _gameBoard[1][2] != 1
-        && _gameBoard[2][3] != 1 && _gameBoard[3][4] != 1)
-    {
+        && _gameBoard[2][3] != 1 && _gameBoard[3][4] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][2] != 1 && _gameBoard[2][3] != 1
-        && _gameBoard[3][4] != 1 && _gameBoard[4][5] != 1)
-    {
+        && _gameBoard[3][4] != 1 && _gameBoard[4][5] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][3] != 1 && _gameBoard[3][4] != 1
-        && _gameBoard[4][5] != 1 && _gameBoard[5][6] != 1)
-    {
+        && _gameBoard[4][5] != 1 && _gameBoard[5][6] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][2] != 1 && _gameBoard[1][3] != 1
-        && _gameBoard[2][4] != 1 && _gameBoard[3][5] != 1)
-    {
+        && _gameBoard[2][4] != 1 && _gameBoard[3][5] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][3] != 1 && _gameBoard[2][4] != 1
-        && _gameBoard[3][5] != 1 && _gameBoard[4][6] != 1)
-    {
+        && _gameBoard[3][5] != 1 && _gameBoard[4][6] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][3] != 1 && _gameBoard[1][4] != 1
-        && _gameBoard[2][5] != 1 && _gameBoard[3][6] != 1)
-    {
+        && _gameBoard[2][5] != 1 && _gameBoard[3][6] != 1) {
         _player2winning++;
     }
 
     if (_gameBoard[0][3] != 1 && _gameBoard[1][2] != 1
-        && _gameBoard[2][1] != 1 && _gameBoard[3][0] != 1)
-    {
+        && _gameBoard[2][1] != 1 && _gameBoard[3][0] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][4] != 1 && _gameBoard[1][3] != 1
-        && _gameBoard[2][2] != 1 && _gameBoard[3][1] != 1)
-    {
+        && _gameBoard[2][2] != 1 && _gameBoard[3][1] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][3] != 1 && _gameBoard[2][2] != 1
-        && _gameBoard[3][1] != 1 && _gameBoard[4][0] != 1)
-    {
+        && _gameBoard[3][1] != 1 && _gameBoard[4][0] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][5] != 1 && _gameBoard[1][4] != 1
-        && _gameBoard[2][3] != 1 && _gameBoard[3][2] != 1)
-    {
+        && _gameBoard[2][3] != 1 && _gameBoard[3][2] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][4] != 1 && _gameBoard[2][3] != 1
-        && _gameBoard[3][2] != 1 && _gameBoard[4][1] != 1)
-    {
+        && _gameBoard[3][2] != 1 && _gameBoard[4][1] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][3] != 1 && _gameBoard[3][2] != 1
-        && _gameBoard[4][1] != 1 && _gameBoard[5][0] != 1)
-    {
+        && _gameBoard[4][1] != 1 && _gameBoard[5][0] != 1) {
         _player2winning++;
     }
     if (_gameBoard[0][6] != 1 && _gameBoard[1][5] != 1
-        && _gameBoard[2][4] != 1 && _gameBoard[3][3] != 1)
-    {
+        && _gameBoard[2][4] != 1 && _gameBoard[3][3] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][5] != 1 && _gameBoard[2][4] != 1
-        && _gameBoard[3][3] != 1 && _gameBoard[4][2] != 1)
-    {
+        && _gameBoard[3][3] != 1 && _gameBoard[4][2] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][4] != 1 && _gameBoard[3][3] != 1
-        && _gameBoard[4][2] != 1 && _gameBoard[5][1] != 1)
-    {
+        && _gameBoard[4][2] != 1 && _gameBoard[5][1] != 1) {
         _player2winning++;
     }
     if (_gameBoard[1][6] != 1 && _gameBoard[2][5] != 1
-        && _gameBoard[3][4] != 1 && _gameBoard[4][3] != 1)
-    {
+        && _gameBoard[3][4] != 1 && _gameBoard[4][3] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][5] != 1 && _gameBoard[3][4] != 1
-        && _gameBoard[4][3] != 1 && _gameBoard[5][2] != 1)
-    {
+        && _gameBoard[4][3] != 1 && _gameBoard[5][2] != 1) {
         _player2winning++;
     }
     if (_gameBoard[2][6] != 1 && _gameBoard[3][5] != 1
-        && _gameBoard[4][4] != 1 && _gameBoard[5][3] != 1)
-    {
+        && _gameBoard[4][4] != 1 && _gameBoard[5][3] != 1) {
         _player2winning++;
     }
 
     //check player 2
     if (_gameBoard[2][0] != 2 && _gameBoard[3][1] != 2
-        && _gameBoard[4][2] != 2 && _gameBoard[5][3] != 2)
-    {
+        && _gameBoard[4][2] != 2 && _gameBoard[5][3] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][0] != 2 && _gameBoard[2][1] != 2
-        && _gameBoard[3][2] != 2 && _gameBoard[4][3] != 2)
-    {
+        && _gameBoard[3][2] != 2 && _gameBoard[4][3] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][1] != 2 && _gameBoard[3][2] != 2
-        && _gameBoard[4][3] != 2 && _gameBoard[5][4] != 2)
-    {
+        && _gameBoard[4][3] != 2 && _gameBoard[5][4] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][0] != 2 && _gameBoard[1][1] != 2
-        && _gameBoard[2][2] != 2 && _gameBoard[3][3] != 2)
-    {
+        && _gameBoard[2][2] != 2 && _gameBoard[3][3] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][1] != 2 && _gameBoard[2][2] != 2
-        && _gameBoard[3][3] != 2 && _gameBoard[4][4] != 2)
-    {
+        && _gameBoard[3][3] != 2 && _gameBoard[4][4] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][2] != 2 && _gameBoard[3][3] != 2
-        && _gameBoard[4][4] != 2 && _gameBoard[5][5] != 2)
-    {
+        && _gameBoard[4][4] != 2 && _gameBoard[5][5] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][1] != 2 && _gameBoard[1][2] != 2
-        && _gameBoard[2][3] != 2 && _gameBoard[3][4] != 2)
-    {
+        && _gameBoard[2][3] != 2 && _gameBoard[3][4] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][2] != 2 && _gameBoard[2][3] != 2
-        && _gameBoard[3][4] != 2 && _gameBoard[4][5] != 2)
-    {
+        && _gameBoard[3][4] != 2 && _gameBoard[4][5] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][3] != 2 && _gameBoard[3][4] != 2
-        && _gameBoard[4][5] != 2 && _gameBoard[5][6] != 2)
-    {
+        && _gameBoard[4][5] != 2 && _gameBoard[5][6] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][2] != 2 && _gameBoard[1][3] != 2
-        && _gameBoard[2][4] != 2 && _gameBoard[3][5] != 2)
-    {
+        && _gameBoard[2][4] != 2 && _gameBoard[3][5] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][3] != 2 && _gameBoard[2][4] != 2
-        && _gameBoard[3][5] != 2 && _gameBoard[4][6] != 2)
-    {
+        && _gameBoard[3][5] != 2 && _gameBoard[4][6] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][3] != 2 && _gameBoard[1][4] != 2
-        && _gameBoard[2][5] != 2 && _gameBoard[3][6] != 2)
-    {
+        && _gameBoard[2][5] != 2 && _gameBoard[3][6] != 2) {
         _player1winning++;
     }
 
     if (_gameBoard[0][3] != 2 && _gameBoard[1][2] != 2
-        && _gameBoard[2][1] != 2 && _gameBoard[3][0] != 2)
-    {
+        && _gameBoard[2][1] != 2 && _gameBoard[3][0] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][4] != 2 && _gameBoard[1][3] != 2
-        && _gameBoard[2][2] != 2 && _gameBoard[3][1] != 2)
-    {
+        && _gameBoard[2][2] != 2 && _gameBoard[3][1] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][3] != 2 && _gameBoard[2][2] != 2
-        && _gameBoard[3][1] != 2 && _gameBoard[4][0] != 2)
-    {
+        && _gameBoard[3][1] != 2 && _gameBoard[4][0] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][5] != 2 && _gameBoard[1][4] != 2
-        && _gameBoard[2][3] != 2 && _gameBoard[3][2] != 2)
-    {
+        && _gameBoard[2][3] != 2 && _gameBoard[3][2] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][4] != 2 && _gameBoard[2][3] != 2
-        && _gameBoard[3][2] != 2 && _gameBoard[4][1] != 2)
-    {
+        && _gameBoard[3][2] != 2 && _gameBoard[4][1] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][3] != 2 && _gameBoard[3][2] != 2
-        && _gameBoard[4][1] != 2 && _gameBoard[5][0] != 2)
-    {
+        && _gameBoard[4][1] != 2 && _gameBoard[5][0] != 2) {
         _player1winning++;
     }
     if (_gameBoard[0][6] != 2 && _gameBoard[1][5] != 2
-        && _gameBoard[2][4] != 2 && _gameBoard[3][3] != 2)
-    {
+        && _gameBoard[2][4] != 2 && _gameBoard[3][3] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][5] != 2 && _gameBoard[2][4] != 2
-        && _gameBoard[3][3] != 2 && _gameBoard[4][2] != 2)
-    {
+        && _gameBoard[3][3] != 2 && _gameBoard[4][2] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][4] != 2 && _gameBoard[3][3] != 2
-        && _gameBoard[4][2] != 2 && _gameBoard[5][1] != 2)
-    {
+        && _gameBoard[4][2] != 2 && _gameBoard[5][1] != 2) {
         _player1winning++;
     }
     if (_gameBoard[1][6] != 2 && _gameBoard[2][5] != 2
-        && _gameBoard[3][4] != 2 && _gameBoard[4][3] != 2)
-    {
+        && _gameBoard[3][4] != 2 && _gameBoard[4][3] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][5] != 2 && _gameBoard[3][4] != 2
-        && _gameBoard[4][3] != 2 && _gameBoard[5][2] != 2)
-    {
+        && _gameBoard[4][3] != 2 && _gameBoard[5][2] != 2) {
         _player1winning++;
     }
     if (_gameBoard[2][6] != 2 && _gameBoard[3][5] != 2
-        && _gameBoard[4][4] != 2 && _gameBoard[5][3] != 2)
-    {
+        && _gameBoard[4][4] != 2 && _gameBoard[5][3] != 2) {
         _player1winning++;
     }
 }
 
-int Game::heuristic(int ** gameBoard, int player) {
+int Game::heuristic(int **gameBoard, int player) {
     int p1_score, p2_score;
     int p1_winning_row, p2_winning_row;
     int p1_threat, p2_threat;
@@ -460,19 +417,18 @@ int Game::heuristic(int ** gameBoard, int player) {
     p1_immed = calcImmedScore(gameBoard, 1);
     p2_immed = calcImmedScore(gameBoard, 2);
 
-    total = (p1_score + p1_winning_row + p1_threat - 2*p1_immed) -
-        (p2_score + p2_winning_row + p2_threat - 2*p2_immed);
+    total = (p1_score + p1_winning_row + p1_threat - 2 * p1_immed) -
+            (p2_score + p2_winning_row + p2_threat - 2 * p2_immed);
 
     return total;
 }
 
 int Game::alphabeta(int node[], int depth, int player, int a, int b) {
-    if (depth == 0 || totalPiece(node) == 42) {
+    if (depth == 0 || totalPiece(node) == 42)
         return heuristic(gameDataTOgameBoard(node), player);
-    }
 
     int value, i;
-    int ** arrBoard = new int*[7];
+    int **arrBoard = new int *[7];
     allValidChildConf(arrBoard, node, player);
 
     if (player == 1) { // define player 1 is the maximize player, so this equilvant to if maximizingPlayer
@@ -485,8 +441,7 @@ int Game::alphabeta(int node[], int depth, int player, int a, int b) {
                     break;
                 }
             }
-    }
-    else {
+    } else {
         value = INT_MAX;
         for (i = 0; i < 7; ++i)
             if (arrBoard[i] != NULL) {
@@ -497,9 +452,6 @@ int Game::alphabeta(int node[], int depth, int player, int a, int b) {
                 }
             }
     }
-
-    //if (depth == _depthLim - 1)
-    //    cout << "score = " << value << endl;
 
     freeDynmBoard(arrBoard);
     return value;
