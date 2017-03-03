@@ -63,6 +63,7 @@ private:
     bool playPiece(int column, int * gamedata, int player);
     int totalPiece(int * gamedata);
     int ** gameDataTOgameBoard(int * gamedata);
+    bool getUserInputInt(int & in);
 
     // game AI functions
     void aiPlayABPruning();

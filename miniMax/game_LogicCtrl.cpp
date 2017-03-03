@@ -91,25 +91,25 @@ void Game::startInteractive() {
 
 void Game::aiPlay() {
     aiPlayABPruning();
-    if (_currentTurn == 1)
-        _currentTurn = 2;
-    else
-        _currentTurn = 1;
+    if (_currentTurn == 1) _currentTurn = 2;
+    else _currentTurn = 1;
 }
 
 void Game::humanPlay() {
-    cout << "Which column do you want to play: ";
-    int col;
-    cin >> col;
-    --col;
-    while (!playPiece(col, _gameData, _currentTurn)) {
-        cout << "That is not a valid move, retry: ";
-        cin >> col;
+    int col = -1;
+    do {
+        cout << "Which column do you want to play: ";
+        if (!getUserInputInt(col)) {
+            cout << "Invalid input, retry: ";
+            continue;
+        }
         --col;
-    }
-    if (_currentTurn == 1)
-        _currentTurn = 2;
-    else
-        _currentTurn = 1;
-}
+        if (!isValidColumn(col, _gameData)) {
+            cout << "That is not a valid move, retry: ";
+            continue;
+        }
+    } while (!playPiece(col, _gameData, _currentTurn));
 
+    if (_currentTurn == 1)  _currentTurn = 2;
+    else _currentTurn = 1;
+}
